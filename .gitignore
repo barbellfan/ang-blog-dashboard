@@ -40,3 +40,6 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# don't check in files with my special codes in it.
+fontawesome.html
