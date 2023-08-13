@@ -1,7 +1,6 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { Firestore } from '@angular/fire/firestore';
+import { Component, OnInit } from '@angular/core';
+import { Firestore, collection, addDoc, DocumentReference } from '@angular/fire/firestore';
 import { NgForm } from '@angular/forms';
-import { getFirestore } from 'firebase/firestore';
 
 @Component({
   selector: 'app-categories',
@@ -10,9 +9,7 @@ import { getFirestore } from 'firebase/firestore';
 })
 export class CategoriesComponent implements OnInit {
 
-  firestore: Firestore = inject(Firestore);
-
-  constructor() {}
+  constructor(private firestore: Firestore) { }
 
   ngOnInit(): void {
     ;
@@ -23,8 +20,12 @@ export class CategoriesComponent implements OnInit {
       category: formData.value.category
     }
 
-    console.log(categoryData);
-
+    addDoc(collection(this.firestore, 'categories'), categoryData)
+    .then((documentReference: DocumentReference) => {
+      console.log(documentReference);
+    })
+    .catch(error => {
+      console.log("error: " + error);
+    });
   }
-
 }
