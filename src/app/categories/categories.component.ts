@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { Firestore } from '@angular/fire/firestore';
 import { NgForm } from '@angular/forms';
+import { getFirestore } from 'firebase/firestore';
 
 @Component({
   selector: 'app-categories',
@@ -7,6 +9,9 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./categories.component.css']
 })
 export class CategoriesComponent implements OnInit {
+
+  firestore: Firestore = inject(Firestore);
+
   constructor() {}
 
   ngOnInit(): void {
