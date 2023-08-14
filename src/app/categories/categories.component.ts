@@ -29,19 +29,18 @@ export class CategoriesComponent implements OnInit {
 
     fs.addDoc(fs.collection(this.afs, 'categories'), categoryData)
     .then((documentReference: fs.DocumentReference) => {
-      console.log(documentReference);
+      console.log("outer doc id: " + documentReference.id);
 
-      // this doesn't work. video is out of date, and I can't figure out how to do this
-      // with the current api.
-      /*
-      fs.collection(this.afs, 'categories').doc(documentReference.id).collection('subcategories').add(subCategoryData).then(docref1 => {
-        console.log(docref1);
-        there's another nested collection call here, but I'm not typing it in.
+      // this actually works.
+      fs.addDoc(fs.collection(this.afs,`categories/${documentReference.id}/subcategories/`), subCategoryData).then((docref: fs.DocumentReference) => {
+        console.log("inner doc id: " + docref.id);
+      })
+      .catch(error => {
+        console.log("inner error: " + error);
       });
-      */
     })
     .catch(error => {
-      console.log("error: " + error);
+      console.log("outer error: " + error);
     });
   }
 }
