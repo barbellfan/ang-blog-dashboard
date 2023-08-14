@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Firestore, collection, addDoc, DocumentReference } from '@angular/fire/firestore';
+import * as fs from '@angular/fire/firestore';
+
+//import { AngularFireStore } from '@angular/fire/firestore'; in video, but does not work.
+
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -9,7 +12,7 @@ import { NgForm } from '@angular/forms';
 })
 export class CategoriesComponent implements OnInit {
 
-  constructor(private firestore: Firestore) { }
+  constructor(private afs: fs.Firestore) { }
 
   ngOnInit(): void {
     ;
@@ -20,9 +23,22 @@ export class CategoriesComponent implements OnInit {
       category: formData.value.category
     }
 
-    addDoc(collection(this.firestore, 'categories'), categoryData)
-    .then((documentReference: DocumentReference) => {
+    let subCategoryData = {
+      subCategory: 'subCategory'
+    }
+
+    fs.addDoc(fs.collection(this.afs, 'categories'), categoryData)
+    .then((documentReference: fs.DocumentReference) => {
       console.log(documentReference);
+
+      // this doesn't work. video is out of date, and I can't figure out how to do this
+      // with the current api.
+      /*
+      fs.collection(this.afs, 'categories').doc(documentReference.id).collection('subcategories').add(subCategoryData).then(docref1 => {
+        console.log(docref1);
+        there's another nested collection call here, but I'm not typing it in.
+      });
+      */
     })
     .catch(error => {
       console.log("error: " + error);
