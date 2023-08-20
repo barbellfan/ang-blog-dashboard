@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as fs from '@angular/fire/firestore';
+import { Category } from '../models/category';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ export class CategoriesService {
 
   constructor(private afs: fs.Firestore) { }
 
-  saveData(data: any) {
+  saveData(data: Category) {
 
     fs.addDoc(fs.collection(this.afs, 'categories'), data)
     .then((documentReference: fs.DocumentReference) => {
