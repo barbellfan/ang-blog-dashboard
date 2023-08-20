@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import * as fs from '@angular/fire/firestore';
-
-//import { AngularFireStore } from '@angular/fire/firestore'; in video, but does not work.
 
 import { NgForm } from '@angular/forms';
+import { CategoriesService } from '../services/categories.service';
 
 @Component({
   selector: 'app-categories',
@@ -12,7 +10,7 @@ import { NgForm } from '@angular/forms';
 })
 export class CategoriesComponent implements OnInit {
 
-  constructor(private afs: fs.Firestore) { }
+  constructor(private categoryService: CategoriesService) { }
 
   ngOnInit(): void {
     ;
@@ -23,24 +21,6 @@ export class CategoriesComponent implements OnInit {
       category: formData.value.category
     }
 
-    let subCategoryData = {
-      subCategory: 'subCategory'
-    }
-
-    fs.addDoc(fs.collection(this.afs, 'categories'), categoryData)
-    .then((documentReference: fs.DocumentReference) => {
-      console.log("outer doc id: " + documentReference.id);
-
-      // this actually works.
-      fs.addDoc(fs.collection(this.afs,`categories/${documentReference.id}/subcategories/`), subCategoryData).then((docref: fs.DocumentReference) => {
-        console.log("inner doc id: " + docref.id);
-      })
-      .catch(error => {
-        console.log("inner error: " + error);
-      });
-    })
-    .catch(error => {
-      console.log("outer error: " + error);
-    });
+    this.categoryService.saveData(categoryData);
   }
 }
