@@ -14,7 +14,16 @@ export class CategoriesComponent implements OnInit {
   constructor(private categoryService: CategoriesService) { }
 
   ngOnInit(): void {
-    ;
+    this.categoryService.loadData().then(
+      function(val) {
+        console.log("data loaded: " + val);
+
+      },
+      function(error) {
+        console.log("data not loaded: " + error);
+
+      }
+    );
   }
 
   onSubmit(formData: NgForm){
