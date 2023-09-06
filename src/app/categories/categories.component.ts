@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { CategoriesService } from '../services/categories.service';
 import { Category } from '../models/category';
+import { FsCategory } from '../models/fs-category';
 
 @Component({
   selector: 'app-categories',
@@ -11,17 +12,20 @@ import { Category } from '../models/category';
 })
 export class CategoriesComponent implements OnInit {
 
-  constructor(private categoryService: CategoriesService) { }
+  categoryArray: Array<FsCategory>;
+
+  constructor(private categoryService: CategoriesService) {
+    this.categoryArray = [];
+  }
 
   ngOnInit(): void {
+    let thisthis = this;
     this.categoryService.loadData().then(
-      function(val) {
-        console.log("data loaded: " + val);
-
+      function(val: FsCategory[]) {
+        thisthis.categoryArray = val;
       },
       function(error) {
         console.log("data not loaded: " + error);
-
       }
     );
   }
