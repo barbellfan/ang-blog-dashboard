@@ -13,6 +13,8 @@ import { FsCategory } from '../models/fs-category';
 export class CategoriesComponent implements OnInit {
 
   categoryArray: Array<FsCategory>;
+  formCategory!: string;
+  formStatus: string = 'Add';
 
   constructor(private categoryService: CategoriesService) {
     this.categoryArray = [];
@@ -37,5 +39,10 @@ export class CategoriesComponent implements OnInit {
 
     this.categoryService.saveData(categoryData);
     formData.reset();
+  }
+
+  onEdit(cat: string) {
+    this.formCategory = cat;
+    this.formStatus = 'Edit';
   }
 }
