@@ -53,4 +53,25 @@ export class CategoriesService {
 
     return arr;
   }
+
+  updateData(id: string, editedData: Category) {
+    /* code from video
+    this.afs.collection('categories').doc(id).update(editedData).then(docRef => {
+      this.toastr.success('Data Updated Successfully');
+    });
+    */
+    const db = fs.collection(this.afs, 'categories');
+    const docRef = fs.doc(db, id);
+    const data = { category: editedData.category }
+    fs.updateDoc(
+      docRef,
+      data
+    ).then(docReff => {
+      console.log("document updated");
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  }
+
 }
