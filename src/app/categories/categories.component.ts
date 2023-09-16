@@ -47,6 +47,7 @@ export class CategoriesComponent implements OnInit {
       formData.reset();
       this.formStatus = 'Add';
     }
+    this.ngOnInit();
   }
 
   onEdit(cat: string, id: string) {
@@ -57,5 +58,6 @@ export class CategoriesComponent implements OnInit {
 
   onDelete(id: string) {
     this.categoryService.deleteData(id);
+    this.ngOnInit();
   }
 }

@@ -42,7 +42,6 @@ export class CategoriesService {
     // taken from here: https://firebase.google.com/docs/firestore/query-data/get-data
     // Section titled: Get all documents in a subcollection
     const querySnapshot: fs.QuerySnapshot<fs.DocumentData> = await fs.getDocs(fs.collection(this.afs, 'categories'));
-    //console.log("num of documents: " + querySnapshot.size);
     querySnapshot.forEach((doc) => {
         const fsCat: FsCategory = {
           id: doc.id,
@@ -71,22 +70,24 @@ export class CategoriesService {
       //console.log("document updated");
     })
     .catch(error => {
-      this.toastr.error("Error deleting data: " + error);
+      this.toastr.error("Error updating data: " + error);
       console.log(error);
     });
   }
 
   deleteData(id: string) {
-    /*
+    /* code from video
     this.afs.collection('categories').doc(id).delete().then(docRef => {
       this.toastr.success('Data Deleted Successfully');
     });
     */
-   const db = fs.collection(this.afs, 'categories');
-   const docRef = fs.doc(db, id);
-   fs.deleteDoc(docRef).then(docRef => {
-    this.toastr.success('Data Deleted Successfully');
-  })
+    const db = fs.collection(this.afs, 'categories');
+    const docRef = fs.doc(db, id);
+    fs.deleteDoc(docRef).then(docRef => {
+      this.toastr.success('Data Deleted Successfully');
+    })
+    .catch(error => {
+      this.toastr.error("Error deleting data: " + error)
+    });
   }
-
 }
