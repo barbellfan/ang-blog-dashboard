@@ -67,11 +67,26 @@ export class CategoriesService {
       docRef,
       data
     ).then(docReff => {
-      console.log("document updated");
+      this.toastr.success('Data Updated Successfully');
+      //console.log("document updated");
     })
     .catch(error => {
+      this.toastr.error("Error deleting data: " + error);
       console.log(error);
     });
+  }
+
+  deleteData(id: string) {
+    /*
+    this.afs.collection('categories').doc(id).delete().then(docRef => {
+      this.toastr.success('Data Deleted Successfully');
+    });
+    */
+   const db = fs.collection(this.afs, 'categories');
+   const docRef = fs.doc(db, id);
+   fs.deleteDoc(docRef).then(docRef => {
+    this.toastr.success('Data Deleted Successfully');
+  })
   }
 
 }
