@@ -13,14 +13,12 @@ export class CategoriesService {
   constructor(private afs: fs.Firestore, private toastr: ToastrService) { }
 
   saveData(data: Category) {
-
-    fs.addDoc(fs.collection(this.afs, 'categories'), data)
+    const db = fs.collection(this.afs, 'categories')
+    fs.addDoc(db, data)
     .then((documentReference: fs.DocumentReference) => {
-      console.log("saved doc id: " + documentReference.id);
-      this.toastr.success('Data inserted successfully.');
+      this.toastr.success('Data inserted successfully. ID: ' + documentReference.id);
     })
     .catch(error => {
-      console.log("error in saveDate() calling fs.addDoc(): " + error);
       this.toastr.error("Error saving data: " + error);
     });
   }
@@ -41,7 +39,8 @@ export class CategoriesService {
     const arr: FsCategory[] = []
     // taken from here: https://firebase.google.com/docs/firestore/query-data/get-data
     // Section titled: Get all documents in a subcollection
-    const querySnapshot: fs.QuerySnapshot<fs.DocumentData> = await fs.getDocs(fs.collection(this.afs, 'categories'));
+    const db = fs.collection(this.afs, 'categories');
+    const querySnapshot: fs.QuerySnapshot<fs.DocumentData> = await fs.getDocs(db);
     querySnapshot.forEach((doc) => {
         const fsCat: FsCategory = {
           id: doc.id,
@@ -65,13 +64,11 @@ export class CategoriesService {
     fs.updateDoc(
       docRef,
       data
-    ).then(docReff => {
-      this.toastr.success('Data Updated Successfully');
-      //console.log("document updated");
+    ).then(() => {
+      this.toastr.success('Data updated successfully. ');
     })
     .catch(error => {
       this.toastr.error("Error updating data: " + error);
-      console.log(error);
     });
   }
 
@@ -83,8 +80,8 @@ export class CategoriesService {
     */
     const db = fs.collection(this.afs, 'categories');
     const docRef = fs.doc(db, id);
-    fs.deleteDoc(docRef).then(docRef => {
-      this.toastr.success('Data Deleted Successfully');
+    fs.deleteDoc(docRef).then(() => {
+      this.toastr.success('Data deleted successfully');
     })
     .catch(error => {
       this.toastr.error("Error deleting data: " + error)
