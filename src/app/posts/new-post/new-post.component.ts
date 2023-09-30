@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { FsCategory } from 'src/app/models/fs-category';
 import { CategoriesService } from 'src/app/services/categories.service';
 
@@ -13,8 +14,20 @@ export class NewPostComponent implements OnInit {
   imgSrc: any = './assets/placeholder-image.jpg';
   selectedImage: any;
   categories: Array<FsCategory> = [];
+  postForm!: FormGroup;
 
-  constructor(private categoryService: CategoriesService) { }
+  constructor(
+    private categoryService: CategoriesService,
+    private fb: FormBuilder) {
+      this.postForm = this.fb.group({
+        title: [''],
+        permalink: {value: '', disabled: true},
+        excerpt: [''],
+        category: [''],
+        postImg: [''],
+        content: ['']
+      });
+    }
 
   ngOnInit(): void {
     let thisthis = this;
