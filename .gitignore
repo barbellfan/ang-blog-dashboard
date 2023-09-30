@@ -42,5 +42,7 @@ testem.log
 Thumbs.db
 
 # don't check in files with my special codes in it.
-fontawesome.html
 environment.prod.ts
+
+# don't check in font files from angular editor.
+fontawesome-webfont.*
