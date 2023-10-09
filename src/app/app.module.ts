@@ -10,6 +10,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore'
+import { StorageModule } from '@angular/fire/storage'
 
 import { environment } from 'src/environments/environment.prod';
 
@@ -42,7 +43,8 @@ import { NewPostComponent } from './posts/new-post/new-post.component';
     BrowserAnimationsModule,
     HttpClientModule,
     AngularEditorModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    StorageModule
   ],
   providers: [],
   bootstrap: [AppComponent]
