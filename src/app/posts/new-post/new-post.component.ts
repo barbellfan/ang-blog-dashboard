@@ -67,8 +67,6 @@ export class NewPostComponent implements OnInit {
   onSubmit() {
     let splitted = this.postForm.value.category.split('-');
 
-    this.postService.uploadImage(this.selectedImage);
-
     const postData: Post = {
       title: this.postForm.value.title,
       permalink: this.postForm.controls['permalink'].getRawValue(),
@@ -84,6 +82,8 @@ export class NewPostComponent implements OnInit {
       status: 'new',
       createdAt: new Date()
     };
+
+    this.postService.uploadImage(this.selectedImage, postData);
   }
 
 }

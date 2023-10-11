@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { Storage,ref, uploadBytesResumable } from '@angular/fire/storage';
+import { Storage,ref, uploadBytesResumable, getDownloadURL } from '@angular/fire/storage';
+import { Post } from '../models/post';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class PostsService {
 
   constructor() { }
 
-  uploadImage(selectedImage: any) {
+  uploadImage(selectedImage: any, postData: Post) {
     const filePath = `postIMG/${Date.now()}`;
     console.log(filePath);
 
@@ -17,7 +18,9 @@ export class PostsService {
     //https://github.com/angular/angularfire/blob/master/docs/storage.md
     const storageRef = ref(this.storage, filePath);
     uploadBytesResumable(storageRef, selectedImage).then(() => {
-      console.log("post image uploaded successfully");
+      getDownloadURL(storageRef).then(url => {
+        postData.postImgPath = url;
+      });
     });
   }
 }
