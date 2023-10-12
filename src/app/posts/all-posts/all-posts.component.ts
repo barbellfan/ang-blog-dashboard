@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FsCategory } from 'src/app/models/fs-category';
+import { Post } from 'src/app/models/post';
 import { PostsService } from 'src/app/services/posts.service';
 
 @Component({
@@ -9,14 +10,17 @@ import { PostsService } from 'src/app/services/posts.service';
 })
 export class AllPostsComponent implements OnInit {
 
+  postArray: Post[] = [];
+
   constructor(private postService: PostsService) { }
 
   ngOnInit(): void {
+    let thisthis = this;
     this.postService.loadData().then(
-      function(val: FsCategory[]) {
-        console.log(val);
+      function(val: Post[]) {
+        //console.log(val);
+        thisthis.postArray = val;
       }
     );
   }
-
 }

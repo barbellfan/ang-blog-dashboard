@@ -4,7 +4,7 @@ import { Storage,ref, uploadBytesResumable, getDownloadURL } from '@angular/fire
 import { Post } from '../models/post';
 import { Firestore } from '@angular/fire/firestore';
 import { ToastrService } from 'ngx-toastr';
-import { FsCategory } from '../models/fs-category';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,10 @@ import { FsCategory } from '../models/fs-category';
 export class PostsService {
   private storage: Storage = inject(Storage);
 
-  constructor(private afs: Firestore, private toastr: ToastrService) { }
+  constructor(
+    private afs: Firestore,
+    private toastr: ToastrService,
+    private router: Router) { }
 
   uploadImage(selectedImage: any, postData: Post) {
     const filePath = `postIMG/${Date.now()}`;
@@ -44,9 +47,11 @@ export class PostsService {
       this.toastr.success('Data inserted successfully');
     });
     */
+
+    this.router.navigate(['/posts']);
   }
 
-  async loadData(): Promise<FsCategory[]> {
+  async loadData(): Promise<Post[]> {
     /* code from video
     return this.afs.collection('post').snapshotChanges().pipe(
       map(actions => {
@@ -59,17 +64,27 @@ export class PostsService {
     );
     */
 
-    const arr: FsCategory[] = []
+    const arr: Post[] = []
     // taken from here: https://firebase.google.com/docs/firestore/query-data/get-data
     // Section titled: Get all documents in a subcollection
     const db = fs.collection(this.afs, 'posts');
     const querySnapshot: fs.QuerySnapshot<fs.DocumentData> = await fs.getDocs(db);
     querySnapshot.forEach((doc) => {
-        const fsCat: FsCategory = {
-          id: doc.id,
-          category: doc.data()['category'] // use the indexer!!
+        let d: fs.DocumentData = doc.data();
+
+        const p: Post = {
+          title: d['title'],
+          permalink: d['permalink'],
+          category: d['category'].category,
+          postImgPath: d['postImgPath'],
+          excerpt: d['excerpt'],
+          content: d['content'],
+          isFeatured: d['isFeatured'],
+          views: d['views'],
+          status: d['status'],
+          createdAt: d['createdAt'].toDate()
       };
-      arr.push(fsCat);
+      arr.push(p);
     });
 
     return arr;
