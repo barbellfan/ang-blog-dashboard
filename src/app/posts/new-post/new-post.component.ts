@@ -84,6 +84,8 @@ export class NewPostComponent implements OnInit {
     };
 
     this.postService.uploadImage(this.selectedImage, postData);
+    this.postForm.reset();
+    this.imgSrc = './assets/placeholder-image.jpg';
   }
 
 }
