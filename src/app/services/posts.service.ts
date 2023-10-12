@@ -4,6 +4,7 @@ import { Storage,ref, uploadBytesResumable, getDownloadURL } from '@angular/fire
 import { Post } from '../models/post';
 import { Firestore } from '@angular/fire/firestore';
 import { ToastrService } from 'ngx-toastr';
+import { FsCategory } from '../models/fs-category';
 
 @Injectable({
   providedIn: 'root'
@@ -44,4 +45,34 @@ export class PostsService {
     });
     */
   }
+
+  async loadData(): Promise<FsCategory[]> {
+    /* code from video
+    return this.afs.collection('post').snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, data};
+        })
+      })
+    );
+    */
+
+    const arr: FsCategory[] = []
+    // taken from here: https://firebase.google.com/docs/firestore/query-data/get-data
+    // Section titled: Get all documents in a subcollection
+    const db = fs.collection(this.afs, 'posts');
+    const querySnapshot: fs.QuerySnapshot<fs.DocumentData> = await fs.getDocs(db);
+    querySnapshot.forEach((doc) => {
+        const fsCat: FsCategory = {
+          id: doc.id,
+          category: doc.data()['category'] // use the indexer!!
+      };
+      arr.push(fsCat);
+    });
+
+    return arr;
+  }
+
 }
