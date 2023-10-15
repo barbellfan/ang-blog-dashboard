@@ -75,7 +75,7 @@ export class PostsService {
         const p: Post = {
           title: d['title'],
           permalink: d['permalink'],
-          category: d['category'].category,
+          category: {category: d['category'].category, categoryId: d['category'].categoryId},
           postImgPath: d['postImgPath'],
           excerpt: d['excerpt'],
           content: d['content'],
