@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { FsCategory } from 'src/app/models/fs-category';
 import { Post } from 'src/app/models/post';
 import { CategoriesService } from 'src/app/services/categories.service';
@@ -21,7 +22,12 @@ export class NewPostComponent implements OnInit {
   constructor(
     private categoryService: CategoriesService,
     private fb: FormBuilder,
-    private postService: PostsService) {
+    private postService: PostsService,
+    private route: ActivatedRoute) {
+      this.route.queryParams.subscribe(val => {
+        console.log(val);
+      });
+
       this.postForm = this.fb.group({
         title: ['',[Validators.required, Validators.minLength(10)]],
         permalink: [{value: '', disabled: true}, Validators.required],
@@ -68,6 +74,7 @@ export class NewPostComponent implements OnInit {
     let splitted = this.postForm.value.category.split('-');
 
     const postData: Post = {
+      firebaseID: '',
       title: this.postForm.value.title,
       permalink: this.postForm.controls['permalink'].getRawValue(),
       category: {

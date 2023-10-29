@@ -37,7 +37,7 @@
                 <td>{{ post.category.category }}</td>
                 <td>{{ post.createdAt | date }}</td>
                 <td>
-                  <button class="btn btn-sm btn-warning" routerLink="/posts/new" [queryParams]="{id: post.category.categoryId}">Edit</button>
+                  <button class="btn btn-sm btn-warning" routerLink="/posts/new" [queryParams]="{id: post.firebaseID}">Edit</button>
                 </td>
               </tr>
             </tbody>

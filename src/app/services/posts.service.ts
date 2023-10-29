@@ -73,6 +73,7 @@ export class PostsService {
         let d: fs.DocumentData = doc.data();
 
         const p: Post = {
+          firebaseID: doc.id,
           title: d['title'],
           permalink: d['permalink'],
           category: {category: d['category'].category, categoryId: d['category'].categoryId},
@@ -90,4 +91,14 @@ export class PostsService {
     return arr;
   }
 
+  loadOneData(id: string) {
+    /* code from video that does not work
+    return this.afs.doc(`posts/${id}`).valueChanges();
+    */
+   // idea from:
+   // https://github.com/firebase/quickstart-js/blob/master/firestore/src/app/restuarant-page/restuarant-page.component.ts
+    const docRef = fs.doc(this.afs, `posts/${id}`);
+    console.log("docRef: " + docRef.id);
+    return docRef;
+  }
 }
