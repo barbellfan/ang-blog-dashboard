@@ -5,6 +5,7 @@ import { Post } from '../models/post';
 import { Firestore } from '@angular/fire/firestore';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -91,14 +92,13 @@ export class PostsService {
     return arr;
   }
 
-  loadOneData(id: string) {
+  loadOneData(id: string): Observable<Post> {
     /* code from video that does not work
     return this.afs.doc(`posts/${id}`).valueChanges();
     */
    // idea from:
    // https://github.com/firebase/quickstart-js/blob/master/firestore/src/app/restuarant-page/restuarant-page.component.ts
     const docRef = fs.doc(this.afs, `posts/${id}`);
-    console.log("docRef: " + docRef.id);
-    return docRef;
+    return fs.docData(docRef) as Observable<Post>;
   }
 }
