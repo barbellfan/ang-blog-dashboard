@@ -18,7 +18,7 @@ export class PostsService {
     private toastr: ToastrService,
     private router: Router) { }
 
-  uploadImage(selectedImage: any, postData: Post) {
+  uploadImage(selectedImage: any, postData: Post, formStatus: string, id: string) {
     const filePath = `postIMG/${Date.now()}`;
 
     // From example at:
@@ -27,7 +27,12 @@ export class PostsService {
     uploadBytesResumable(storageRef, selectedImage).then(() => {
       getDownloadURL(storageRef).then(url => {
         postData.postImgPath = url;
-        this.saveData(postData);
+
+        if (formStatus == 'Edit') {
+          this.updateData(id, postData);
+        } else {
+          this.saveData(postData);
+        }
       });
     });
   }
@@ -100,5 +105,32 @@ export class PostsService {
    // https://github.com/firebase/quickstart-js/blob/master/firestore/src/app/restuarant-page/restuarant-page.component.ts
     const docRef = fs.doc(this.afs, `posts/${id}`);
     return fs.docData(docRef) as Observable<Post>;
+  }
+
+  updateData(id: string, postData: Post) {
+    /* code from video that doesn't work anymore
+    this.afs.doc(`posts/${id}`).update(postData).then(() => {
+      this.toastr.success('Data updated successfully');
+    });
+    */
+    const docRef = fs.doc(this.afs, `posts/${id}`)
+    fs.updateDoc(docRef, {
+      category: {
+        category: postData.category.category,
+        categoryId: postData.category.categoryId
+      },
+      content: postData.content,
+      createdAt: postData.createdAt,
+      excerpt: postData.excerpt,
+      isFeatured: postData.isFeatured,
+      permalink: postData.permalink,
+      postImgPath: postData.postImgPath,
+      status: postData.status, // 'edited'?
+      title: postData.title,
+      views: postData.views
+    }).then(() => {
+      this.toastr.success('Data updated successfully');
+      this.router.navigate(['/posts']);
+    });
   }
 }

@@ -22,12 +22,16 @@ export class NewPostComponent implements OnInit {
 
   formStatus: string = 'Add New';
 
+  docId: string = '';
+
   constructor(
     private categoryService: CategoriesService,
     private fb: FormBuilder,
     private postService: PostsService,
     private route: ActivatedRoute) {
       this.route.queryParams.subscribe(val => {
+
+        this.docId = val['id'];
 
         this.postService.loadOneData(val['id']).subscribe(post => {
 
@@ -102,7 +106,7 @@ export class NewPostComponent implements OnInit {
       createdAt: new Date()
     };
 
-    this.postService.uploadImage(this.selectedImage, postData);
+    this.postService.uploadImage(this.selectedImage, postData, this.formStatus, this.docId);
     this.postForm.reset();
     this.imgSrc = './assets/placeholder-image.jpg';
   }
