@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { FsCategory } from 'src/app/models/fs-category';
 import { Post } from 'src/app/models/post';
 import { CategoriesService } from 'src/app/services/categories.service';
@@ -18,7 +18,6 @@ export class NewPostComponent implements OnInit {
   selectedImage: any;
   categories: Array<FsCategory> = [];
   postForm!: FormGroup;
-  post: any;
 
   formStatus: string = 'Add New';
 
@@ -32,21 +31,18 @@ export class NewPostComponent implements OnInit {
       this.route.queryParams.subscribe(val => {
 
         this.docId = val['id'];
-
         this.postService.loadOneData(val['id']).subscribe(post => {
 
-          this.post = post;
-
           this.postForm = this.fb.group({
-            title: [this.post.title, [Validators.required, Validators.minLength(10)]],
-            permalink: [{value: this.post.permalink, disabled: true}, Validators.required],
-            excerpt: [this.post.excerpt, [Validators.required, Validators.minLength(50)]],
-            category: [`${this.post.category.categoryId}-${this.post.category.category}`, Validators.required],
+            title: [post.title, [Validators.required, Validators.minLength(10)]],
+            permalink: [{value: post.permalink, disabled: true}, Validators.required],
+            excerpt: [post.excerpt, [Validators.required, Validators.minLength(50)]],
+            category: [`${post.category.categoryId}-${post.category.category}`, Validators.required],
             postImg: ['', Validators.required],
-            content: [this.post.content, Validators.required]
+            content: [post.content, Validators.required]
           });
 
-          this.imgSrc = this.post.postImgPath;
+          this.imgSrc = post.postImgPath;
           this.formStatus = 'Edit';
 
         });
@@ -62,7 +58,6 @@ export class NewPostComponent implements OnInit {
       },
       function(error) {
         console.log("data not loaded: " + error);
-
       }
     );
   }
