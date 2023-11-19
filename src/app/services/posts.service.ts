@@ -159,4 +159,11 @@ export class PostsService {
       this.toastr.warning("Data deleted");
     });
   }
+
+  markFeatured(id: string, featuredData: any) {
+    const docRef = fs.doc(this.afs, `posts/${id}`);
+    fs.updateDoc(docRef, featuredData).then(() =>{
+      this.toastr.info("Featured status updated");
+    });
+  }
 }

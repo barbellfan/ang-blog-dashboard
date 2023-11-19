@@ -37,8 +37,8 @@
                 <td>
                   <button class="btn btn-sm btn-warning" routerLink="/posts/new" [queryParams]="{id: post.firebaseID}">Edit</button>
                   <button class="btn btn-sm btn-danger ml-2" (click)="onDelete(post.postImgPath, post.firebaseID)">Delete</button>
-                  <button *ngIf="!post.isFeatured" class="btn btn-sm btn-success ml-2" (click)="onDelete(post.postImgPath, post.firebaseID)">Mark Featured</button>
-                  <button *ngIf="post.isFeatured" class="btn btn-sm btn-info ml-2" (click)="onDelete(post.postImgPath, post.firebaseID)">Remove Featured</button>
+                  <button *ngIf="!post.isFeatured" class="btn btn-sm btn-success ml-2" (click)="onFeatured(post.firebaseID, true)">Mark Featured</button>
+                  <button *ngIf="post.isFeatured" class="btn btn-sm btn-info ml-2" (click)="onFeatured(post.firebaseID, false)">Remove Featured</button>
                 </td>
               </tr>
             </tbody>
