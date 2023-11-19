@@ -30,6 +30,5 @@ export class AllPostsComponent implements OnInit {
 
   onDelete(postImgPath: string, id: string) {
     this.postService.deleteImage(postImgPath, id);
-    location.reload();
   }
 }
