@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import * as fs from '@angular/fire/firestore';
-import { Storage,ref, uploadBytesResumable, getDownloadURL } from '@angular/fire/storage';
+import { Storage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from '@angular/fire/storage';
 import { Post } from '../models/post';
 import { Firestore } from '@angular/fire/firestore';
 import { ToastrService } from 'ngx-toastr';
@@ -131,6 +131,32 @@ export class PostsService {
     }).then(() => {
       this.toastr.success('Data updated successfully');
       this.router.navigate(['/posts']);
+    });
+  }
+
+  deleteImage(postImgPath: string, id: string) {
+    /* code from video that doesn't work any more
+    this.storage.storage.refFromURL(postImgPath).delete();
+    */
+    //const storage = getStorage();
+    const storageRef = ref(this.storage, postImgPath);
+    deleteObject(storageRef).then(() => {
+      console.log("image deleted successfully");
+      this.deleteData(id);
+    }).catch((error) => {
+      console.log("error deleting image: " + error);
+    })
+  }
+
+  deleteData(id: string) {
+    /* code from video that doesn't work anymore
+    this.afs.doc(`posts/${id}`).delete().then(() => {
+      this.toastr.warning("Data deleted");
+    });
+    */
+    const docRef = fs.doc(this.afs, `posts/${id}`);
+    fs.deleteDoc(docRef).then(() => {
+      this.toastr.warning("Data deleted");
     });
   }
 }

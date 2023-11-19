@@ -38,6 +38,7 @@
                 <td>{{ post.createdAt | date }}</td>
                 <td>
                   <button class="btn btn-sm btn-warning" routerLink="/posts/new" [queryParams]="{id: post.firebaseID}">Edit</button>
+                  <button class="btn btn-sm btn-danger ml-2">Delete</button>
                 </td>
               </tr>
             </tbody>
