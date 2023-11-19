@@ -15,6 +15,10 @@ export class AllPostsComponent implements OnInit {
   constructor(private postService: PostsService) { }
 
   ngOnInit(): void {
+    this.loadPostArray();
+  }
+
+  loadPostArray(): void {
     let thisthis = this;
     this.postService.loadData().then(
       function(val: Post[]) {
@@ -22,5 +26,10 @@ export class AllPostsComponent implements OnInit {
         thisthis.postArray = val;
       }
     );
+  }
+
+  onDelete(postImgPath: string, id: string) {
+    this.postService.deleteImage(postImgPath, id);
+    location.reload();
   }
 }
