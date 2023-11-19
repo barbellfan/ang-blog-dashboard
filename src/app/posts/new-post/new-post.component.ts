@@ -31,22 +31,33 @@ export class NewPostComponent implements OnInit {
       this.route.queryParams.subscribe(val => {
 
         this.docId = val['id'];
-        this.postService.loadOneData(val['id']).subscribe(post => {
 
-          this.postForm = this.fb.group({
-            title: [post.title, [Validators.required, Validators.minLength(10)]],
-            permalink: [{value: post.permalink, disabled: true}, Validators.required],
-            excerpt: [post.excerpt, [Validators.required, Validators.minLength(50)]],
-            category: [`${post.category.categoryId}-${post.category.category}`, Validators.required],
-            postImg: ['', Validators.required],
-            content: [post.content, Validators.required]
+        if (this.docId) {
+          this.postService.loadOneData(val['id']).subscribe(post => {
+
+            this.postForm = this.fb.group({
+              title: [post.title, [Validators.required, Validators.minLength(10)]],
+              permalink: [{value: post.permalink, disabled: true}, Validators.required],
+              excerpt: [post.excerpt, [Validators.required, Validators.minLength(50)]],
+              category: [`${post.category.categoryId}-${post.category.category}`, Validators.required],
+              postImg: ['', Validators.required],
+              content: [post.content, Validators.required]
+            });
+
+            this.imgSrc = post.postImgPath;
+            this.formStatus = 'Edit';
+
           });
-
-          this.imgSrc = post.postImgPath;
-          this.formStatus = 'Edit';
-
-        });
-
+        } else {
+          this.postForm = this.fb.group({
+            title: ['', [Validators.required, Validators.minLength(10)]],
+            permalink: [{value: '', disabled: true}, Validators.required],
+            excerpt: ['', [Validators.required, Validators.minLength(50)]],
+            category: ['', Validators.required],
+            postImg: ['', Validators.required],
+            content: ['', Validators.required]
+          });
+        }
       });
     }
 
