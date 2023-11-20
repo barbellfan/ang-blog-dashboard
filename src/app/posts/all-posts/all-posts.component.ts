@@ -22,7 +22,6 @@ export class AllPostsComponent implements OnInit {
     let thisthis = this;
     this.postService.loadData().then(
       function(val: Post[]) {
-        //console.log(val);
         thisthis.postArray = val;
       }
     );

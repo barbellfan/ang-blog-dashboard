@@ -138,13 +138,11 @@ export class PostsService {
     /* code from video that doesn't work any more
     this.storage.storage.refFromURL(postImgPath).delete();
     */
-    //const storage = getStorage();
     const storageRef = ref(this.storage, postImgPath);
     deleteObject(storageRef).then(() => {
-      console.log("image deleted successfully");
       this.deleteData(id);
     }).catch((error) => {
-      console.log("error deleting image: " + error);
+      this.toastr.error("error deleting image: " + error);
     })
   }
 
@@ -161,6 +159,7 @@ export class PostsService {
   }
 
   markFeatured(id: string, featuredData: any) {
+    // code from video that doesn't work has been elided.
     const docRef = fs.doc(this.afs, `posts/${id}`);
     fs.updateDoc(docRef, featuredData).then(() =>{
       this.toastr.info("Featured status updated");
