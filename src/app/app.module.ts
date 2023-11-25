@@ -11,6 +11,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore'
 import { StorageModule } from '@angular/fire/storage'
+import { AuthModule } from '@angular/fire/auth';
 
 import { environment } from 'src/environments/environment.prod';
 
@@ -46,7 +47,8 @@ import { LoginComponent } from './auth/login/login.component';
     HttpClientModule,
     AngularEditorModule,
     ReactiveFormsModule,
-    StorageModule
+    StorageModule,
+    AuthModule
   ],
   providers: [],
   bootstrap: [AppComponent]
